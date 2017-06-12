@@ -1,0 +1,16 @@
+info:
+  app:
+    name: security-admin-service
+    description: Security Admin Service
+    version: 1.0.0
+
+server:
+  port: 2222
+  context-path: /security-admin-service
+
+spring:
+  application:
+    name: security-admin-service
+
+logging:
+  config: classpath:logback-test.xml
