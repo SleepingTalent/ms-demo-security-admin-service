@@ -1,0 +1,61 @@
+def pomLocation = "security-admin-service-parent"
+def dockerRepoName = "sleepingtalent/security-admin-service"
+def targetLocation = "security-admin-service-parent/security-admin-service/target"
+def testTargetLocation = "security-admin-service-parent/security-admin-service-int-test/target"
+def cucumberReport = "cucumber-report/cucumber-html-reports/cucumber-html-reports"
+
+def version
+
+node {
+  def img
+
+  stage('Checkout') {
+    checkout scm
+  }
+
+  stage('Build Application') {
+        try {
+          sh 'mvn -B -V -U -e -f ' + pomLocation + '/pom.xml clean install -Plocal-docker'
+        } finally {
+          junit targetLocation + '/surefire-reports/*.xml'
+
+          publishHTML(target: [
+                  allowMissing         : true,
+                  alwaysLinkToLastBuild: false,
+                  keepAll              : true,
+                  reportDir            : targetLocation + '/pit-reports',
+                  reportFiles          : 'index.html',
+                  reportName           : "security-admin-service pit report"
+          ])
+
+          publishHTML(target: [
+                  allowMissing         : true,
+                  alwaysLinkToLastBuild: false,
+                  keepAll              : true,
+                  reportDir            : testTargetLocation + '/' + cucumberReport,
+                  reportFiles          : 'overview-features.html',
+                  reportName           : "security-admin-service cucumber report"
+          ])
+        }
+  }
+
+  stage('Package Image') {
+    def pom = readMavenPom file: pomLocation+'/pom.xml'
+    version = pom.version
+    img = docker.build(dockerRepoName+':'+version, targetLocation)
+  }
+
+  stage('Push Image') {
+    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+        img.push()
+        img.push("latest")
+
+    }
+  }
+
+  stage('Remove Local Image') {
+       sh 'docker rmi -f registry.hub.docker.com/'+dockerRepoName+':latest'
+       sh 'docker rmi -f registry.hub.docker.com/'+dockerRepoName+':'+version
+       sh 'docker rmi -f '+dockerRepoName+':'+version
+  }
+}

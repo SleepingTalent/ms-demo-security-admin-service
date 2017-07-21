@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-@Table(name = "SECURITY_ROLES")
+@Table(name = "security_roles")
 public class SecurityRole {
 
     public SecurityRole() {
@@ -23,18 +23,18 @@ public class SecurityRole {
     private Long id;
 
     @NotNull
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
 
     @NotNull
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
     @ManyToMany
     @JsonIgnore
-    @JoinTable(name = "SECURITY_ROLE_PERMISSIONS",
-            joinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID", referencedColumnName = "ID"))
+    @JoinTable(name = "security_role_permissions",
+            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "ID"))
     private List<SecurityPermission> securityPermissions;
 
     @ManyToMany(mappedBy = "securityRoles")

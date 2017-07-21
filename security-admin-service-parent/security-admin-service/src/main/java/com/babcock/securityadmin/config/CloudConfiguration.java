@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @EnableDiscoveryClient
 @EnableCircuitBreaker
-@Profile({"dev","qa","prod"})
 @ComponentScan("com.babcock.securityadmin")
 @Import({SecurityConfiguration.class,DatabaseConfiguration.class, SwaggerConfiguration.class})
 public class CloudConfiguration {

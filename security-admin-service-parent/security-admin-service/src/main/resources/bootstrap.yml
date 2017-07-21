@@ -27,10 +27,22 @@ logging:
 ---
 
 spring:
+    profiles: test
+    cloud:
+      config:
+        uri: http://config-server:1111/config-service/
+logging:
+  config: classpath:logback.xml
+
+---
+
+---
+
+spring:
   profiles: qa
   cloud:
     config:
-      uri: http://10.52.180.29/config-service/
+      uri: http://10.52.180.42:1111/config-service/
 logging:
   config: classpath:log/logback-qa.xml
 

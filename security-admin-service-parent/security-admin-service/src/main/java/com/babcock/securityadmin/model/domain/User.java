@@ -7,57 +7,57 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "PAY_NUMBER")
+    @Column(name = "pay_number")
     private String payNumber;
 
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "EMAIL")
+    @Column(name = "email")
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MANAGER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "manager_id", referencedColumnName = "ID")
     private User managerUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CREATED_BY_SUBJECT", referencedColumnName = "ID")
+    @JoinColumn(name = "created_by_subject", referencedColumnName = "ID")
     private SecuritySubject createdBySubject;
 
-    @Column(name = "CREATION_DATE")
+    @Column(name = "creation_date")
     private Date creationDate;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
     private SecuritySubject securitySubject;
 
-    @Column(name = "JOB_TITLE")
+    @Column(name = "job_title")
     private String jobTitle;
 
-    @Column(name = "DEPARTMENT")
+    @Column(name = "department")
     private String department;
 
-    @Column(name = "ADDRESS")
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "LOCATION")
+    @Column(name = "location")
     private String location;
 
-    @Column(name = "PHONE_NUMBER")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "LICENCE")
+    @Column(name = "licence")
     private String licenceDetails;
 
     @NotNull
     @Check(constraints = "IS_MANAGER IN ('Y', 'N')")
-    @Column(name = "IS_MANAGER")
+    @Column(name = "is_manager")
     private String isManager = "N";
 
     public Long getId() {

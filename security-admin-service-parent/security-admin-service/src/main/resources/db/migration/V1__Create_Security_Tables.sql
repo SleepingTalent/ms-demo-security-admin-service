@@ -1,55 +1,55 @@
-CREATE TABLE SECURITY_PERMISSIONS (
-    ID          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    NAME        VARCHAR(255) NOT NULL,
-    DESCRIPTION VARCHAR(255) NOT NULL,
-    CONSTRAINT PERMISSIONS_NAME_UQ UNIQUE(NAME)
+CREATE TABLE security_permissions (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    CONSTRAINT PERMISSIONS_NAME_UQ UNIQUE(name)
 );
 
-CREATE TABLE SECURITY_ROLE_PERMISSIONS (
-    ID            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    ROLE_ID       BIGINT NOT NULL,
-    PERMISSION_ID BIGINT NOT NULL
+CREATE TABLE security_role_permissions (
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    role_id       BIGINT NOT NULL,
+    permission_id BIGINT NOT NULL
 );
 
-CREATE TABLE SECURITY_ROLES (
-    ID          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    NAME        VARCHAR(255) NOT NULL,
-    DESCRIPTION VARCHAR(255) NOT NULL,
-    CONSTRAINT ROLES_NAME_UQ UNIQUE(NAME)
+CREATE TABLE security_roles (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    CONSTRAINT ROLES_NAME_UQ UNIQUE(name)
 );
 
-CREATE TABLE SECURITY_SUBJECT_ROLES (
-    ID         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    SUBJECT_ID BIGINT NOT NULL,
-    ROLE_ID    BIGINT NOT NULL
+CREATE TABLE security_subject_roles (
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    subject_id BIGINT NOT NULL,
+    role_id    BIGINT NOT NULL
 );
 
-CREATE TABLE SECURITY_SUBJECTS (
-    ID        BIGINT AUTO_INCREMENT PRIMARY KEY,
-    USERNAME  VARCHAR(255) NOT NULL,
-    PASSWORD  VARCHAR(255) NOT NULL,
-    SALT      VARCHAR(255) NOT NULL,
-    ENABLED   BOOLEAN,
-    USER_ID   BIGINT,
-    CONSTRAINT SUBJECTS_USERNAME_UQ UNIQUE(USERNAME)
+CREATE TABLE security_subjects (
+    id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username  VARCHAR(255) NOT NULL,
+    password  VARCHAR(255) NOT NULL,
+    salt      VARCHAR(255) NOT NULL,
+    enabled   BOOLEAN,
+    user_id   BIGINT,
+    CONSTRAINT SUBJECTS_USERNAME_UQ UNIQUE(username)
 );
 
-CREATE TABLE USERS
+CREATE TABLE users
 (
-    ID                 BIGINT AUTO_INCREMENT PRIMARY KEY,
-    PAY_NUMBER         VARCHAR(20)    NOT NULL,
-    NAME               VARCHAR(256)   NOT NULL,
-    EMAIL              VARCHAR(256)   NOT NULL UNIQUE,
-    MANAGER_ID         BIGINT,
-    CREATED_BY_SUBJECT BIGINT,
-    CREATION_DATE      TIMESTAMP      NOT NULL,
-    IS_MANAGER         VARCHAR(1)     NOT NULL CHECK (IS_MANAGER IN ('Y', 'N')),
-    PHONE_NUMBER       VARCHAR(50),
-    MOBILE_NUMBER      VARCHAR(50),
-    ORGANISATION       VARCHAR(100),
-    JOB_TITLE          VARCHAR(256),
-    DEPARTMENT         VARCHAR(256),
-    ADDRESS            VARCHAR(2000),
-    LOCATION           VARCHAR(100),
-    LICENCE            VARCHAR(2000)
+    id                 BIGINT AUTO_INCREMENT PRIMARY KEY,
+    pay_number         VARCHAR(20)    NOT NULL,
+    name               VARCHAR(256)   NOT NULL,
+    email              VARCHAR(256)   NOT NULL UNIQUE,
+    manager_id         BIGINT,
+    created_by_subject BIGINT,
+    creation_date      TIMESTAMP      NOT NULL,
+    is_manager         VARCHAR(1)     NOT NULL CHECK (is_manager IN ('Y', 'N')),
+    phone_number       VARCHAR(50),
+    mobile_number      VARCHAR(50),
+    organisation       VARCHAR(100),
+    job_title          VARCHAR(256),
+    department         VARCHAR(256),
+    address            VARCHAR(2000),
+    location           VARCHAR(100),
+    licence            VARCHAR(2000)
 );

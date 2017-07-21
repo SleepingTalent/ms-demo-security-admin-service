@@ -10,6 +10,7 @@
             <includes>
                 <include>${executable.server.jar.name}.jar</include>
                 <include>*.bat</include>
+                <include>Dockerfile</include>
             </includes>
         </fileSet>
     </fileSets>

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-@Table(name = "SECURITY_SUBJECTS")
+@Table(name = "security_subjects")
 public class SecuritySubject {
 
     @Id
@@ -15,32 +15,32 @@ public class SecuritySubject {
     private Long id;
 
     @NotNull
-    @Column(name = "USERNAME")
+    @Column(name = "username")
     private String username;
 
     @NotNull
     @JsonIgnore
-    @Column(name = "PASSWORD")
+    @Column(name = "password")
     private String password;
 
     @NotNull
     @JsonIgnore
-    @Column(name = "SALT")
+    @Column(name = "salt")
     private String salt;
 
     @NotNull
-    @Column(name = "ENABLED")
+    @Column(name = "enabled")
     private boolean enabled;
 
     @OneToOne
-    @JoinColumn(name = "USER_ID", unique = true)
+    @JoinColumn(name = "user_id", unique = true)
     @JsonIgnore
     private User user;
 
     @ManyToMany
-    @JoinTable(name = "SECURITY_SUBJECT_ROLES",
-            joinColumns = @JoinColumn(name = "SUBJECT_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID"))
+    @JoinTable(name = "security_subject_roles",
+            joinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "ID"))
     private List<SecurityRole> securityRoles;
 
     public Long getId() {

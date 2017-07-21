@@ -1,0 +1,98 @@
+###############################################################
+### Default Configuration for development environment       ###
+### This file with be used on local dev and CI environments ###
+###############################################################
+version: '2'
+
+services:
+  test-db:
+      image: mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=testdb
+        - MYSQL_USER=test
+        - MYSQL_PASSWORD=password
+      ports:
+        - "3306:3306"
+      expose:
+        - "3306"
+
+  config-server:
+      image: sleepingtalent/configuration-server:latest
+      environment:
+        - SERVER_PORT=1111
+        - SPRING_PROFILES_ACTIVE=test,native
+      ports:
+        - "1111:1111"
+      depends_on:
+        - test-db
+      volumes:
+        - /home/developer/docker-logs/:/app/log
+      expose:
+        - "1111"
+
+  eureka-server:
+      image: sleepingtalent/eureka-server:latest
+      environment:
+        - SERVER_PORT=1112
+        - SPRING_PROFILES_ACTIVE=test
+      ports:
+        - "1112:1112"
+      depends_on:
+        - config-server
+      command: ["dockerize", "-wait", "http://config-server:1111/config-service/eureka-server-one/test", "-timeout", "320s", "--", "/bin/sh", "-c", "java -jar app.jar --server.port=1112 --spring.profiles.active=test"]
+      volumes:
+        - /home/developer/docker-logs/:/app/log
+      expose:
+        - "1112"
+
+  security-server:
+      image: sleepingtalent/security-server:latest
+      environment:
+        - SERVER_PORT=1113
+        - SPRING_PROFILES_ACTIVE=test
+      ports:
+        - "1113:1113"
+      depends_on:
+        - config-server
+        - eureka-server
+      command: ["dockerize", "-wait", "http://eureka-server:1112", "-timeout", "320s", "--", "/bin/sh", "-c", "java -jar app.jar --server.port=1113 --spring.profiles.active=test"]
+      volumes:
+        - /home/developer/docker-logs/:/app/log
+      expose:
+        - "1113"
+
+  zuul-server:
+      image: sleepingtalent/zuul-server:latest
+      environment:
+        - SERVER_PORT=1114
+        - SPRING_PROFILES_ACTIVE=test
+      ports:
+        - "1114:1114"
+      depends_on:
+        - config-server
+        - eureka-server
+      command: ["dockerize", "-wait", "http://eureka-server:1112", "-timeout", "320s", "--", "/bin/sh", "-c", "java -jar app.jar --server.port=1114 --spring.profiles.active=test"]
+      volumes:
+        - /home/developer/docker-logs/:/app/log
+      expose:
+        - "1114"
+
+  security-admin-service:
+      image: sleepingtalent/security-admin-service:snapshot
+      environment:
+      - SERVER_PORT=2222
+      - SPRING_PROFILES_ACTIVE=test
+      ports:
+      - "2222:2222"
+      depends_on:
+      - config-server
+      - eureka-server
+      - security-server
+      - zuul-server
+      command: ["dockerize", "-wait", "http://eureka-server:1112", "-timeout", "320s", "--", "/bin/sh", "-c", "java -jar app.jar --server.port=2222 --spring.profiles.active=test"]
+      volumes:
+       - /home/developer/docker-logs/:/app/log
+      expose:
+       - "2222"
+

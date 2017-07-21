@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-@Table(name = "SECURITY_PERMISSIONS")
+@Table(name = "security_permissions")
 public class SecurityPermission {
 
     public SecurityPermission() {
@@ -22,11 +22,11 @@ public class SecurityPermission {
     private Long id;
 
     @NotNull
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
 
     @NotNull
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
     @JsonIgnore
